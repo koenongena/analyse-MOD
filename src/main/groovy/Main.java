@@ -22,6 +22,9 @@ public class Main {
         RondePrinter ronde4 = new RondePrinter("RONDE 4 : WHEREVER I LAY MY HAT...", "ronde4", ploegen);
         ronde4.print(System.out);
 
+        RondePrinter ronde5 = new RondePrinter("RONDE 5: I CLOSE MY EYES AND COUNT BACK FROM 12", "ronde5", ploegen);
+        ronde5.print(System.out);
+
 //        scoreAnalytics.printScores(System.out);
 
     }
