@@ -71,8 +71,31 @@ for (Answer answer : answers) {
     println "${question.artist} ${formatCount(answer.countArtistsAnswered())} - ${question.title} ${formatCount(answer.countTitlesAnswered())})"
 }
 
+println "* Scores"
+def scores = determineScores(answers)
+println scores.sort { a, b -> b.value <=> a.value }
+
 //* Lijst QMS op *//
 
+def determineScores(answers) {
+    def s = [:]
+    for (Answer answer : answers) {
+        for (String ploeg : answer.titleAnsweredBy) {
+            if (!s.containsKey(ploeg)){
+                s[ploeg] = 0
+            }
+            s[ploeg] = s[ploeg] + 1
+        }
+        for (String ploeg : answer.artistAnsweredBy) {
+            if (!s.containsKey(ploeg)){
+                s[ploeg] = 0
+            }
+            s[ploeg] = s[ploeg] + 1
+        }
+    }
+
+    return s
+}
 
 def filterQMS = {
     def qms = []
