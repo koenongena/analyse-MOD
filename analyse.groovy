@@ -1,46 +1,49 @@
-//def ronde1 = """AH RAHMAN;JAI HO;2008;
-//BRAN VAN 3000;ASTOUNDED;2001;
-//CLAUDIA SYLVA;Jâ€™AI PLEURÃ‰;1965;
-//DILLINGER;RAGNAMPIZA;1976;
-//EXECUTIVE SLACKS;SOLEMN DILLEMA;1986;
-//FRANCIS BEBEY;THE COFEE COLA SONG;1982;
-//GOLDIE LOOKIN CHAIN;GUNS DONâ€™T KILL PEOPLE, RAPPERS DO;2004;
-//HAWKWIND;MOTORHEAD;1975;
-//ILLUSION;DANSEN IN DE REGEN;1994;
-//THE JUDDS;WHY NOT ME;1984;
-//KÃ–LSCH;IN BOTTLES;2017;
-//LIVERPOOL 5;ANYWAY THAT YOU WANT ME;1967;
-//MARK RONSON (feat. Mystikal);FEEL RIGHT;2015;
-//Oâ€™ JAYS;BACKSTABBERS;1972;
-//PRINCE BUSTER;DANCE CLEOPATRA DANCE;1967;
-//QUANNUM (MCâ€™S);I CHANGED MY MIND;1999;
-//ROLLING STONES;JUST YOUR FOOL;2016;
-//SLIPKNOT;SPIT IT OUT;1999;
-//TV ON THE RADIO;WOLF LIKE ME;2006;
-//UNDERGROUND SUNSHINE;BIRTHDAY;1969;
-//VAN MORRISON;MOONDANCE;1970;
-//WALLACE VANBORN;ATOM JUGGLER;2010;
-//XTC;WONDERLAND;1983;
-//ZOHRA;I HATE TO LOVE YOU;1997;"""
-def ronde1 = """AH RAHMAN;JAI HO;2008;
-BRAN VAN 3000;ASTOUNDED;2001;"""
+def rondeNaam = args[0]
 
-//def ploegen = ["PARIS HILTON LOOKALIKES", "WAG TEAM", "LUCKY LOCOS", "THE CRYPTKICKERS", "GARNIZOEN!", "THE 4SHOTA", "ROYAL FLUSH", "GREEN ONIONS", "KIPZ"]
-def ploegen = ["PARIS HILTON LOOKALIKES", "WAG"]
+assert !rondeNaam.isEmpty()
+
+def ronde1 = """AH RAHMAN;JAI HO;2008;
+BRAN VAN 3000;ASTOUNDED;2001;
+CLAUDIA SYLVA;J’AI PLEURÉ;1965;
+DILLINGER;RAGNAMPIZA;1976;
+EXECUTIVE SLACKS;SOLEMN DILLEMA;1986;
+FRANCIS BEBEY;THE COFEE COLA SONG;1982;
+GOLDIE LOOKIN CHAIN;GUNS DON’T KILL PEOPLE, RAPPERS DO;2004;
+HAWKWIND;MOTORHEAD;1975;
+ILLUSION;DANSEN IN DE REGEN;1994;
+THE JUDDS;WHY NOT ME;1984;
+KÖLSCH;IN BOTTLES;2017;
+LIVERPOOL 5;ANYWAY THAT YOU WANT ME;1967;
+MARK RONSON (feat. Mystikal);FEEL RIGHT;2015;
+O’ JAYS;BACKSTABBERS;1972;
+PRINCE BUSTER;DANCE CLEOPATRA DANCE;1967;
+QUANNUM (MC’S);I CHANGED MY MIND;1999;
+ROLLING STONES;JUST YOUR FOOL;2016;
+SLIPKNOT;SPIT IT OUT;1999;
+TV ON THE RADIO;WOLF LIKE ME;2006;
+UNDERGROUND SUNSHINE;BIRTHDAY;1969;
+VAN MORRISON;MOONDANCE;1970;
+WALLACE VANBORN;ATOM JUGGLER;2010;
+XTC;WONDERLAND;1983;
+ZOHRA;I HATE TO LOVE YOU;1997;"""
+//def ronde1 = """AH RAHMAN;JAI HO;2008;
+//BRAN VAN 3000;ASTOUNDED;2001;"""
+
+def ploegen = ["THE 4SHOTA", "THE CRYPTKICKERS", "GARNIZOEN!", "GREEN ONIONS", "KIPZ", "LUCKY LOCOS", "PARIS HILTON LOOKALIKES", "ROYAL FLUSH", "WAG TEAM"]
+//def ploegen = ["PARIS HILTON LOOKALIKES", "WAG"]
 
 def questions = []
 def answers = []
 ronde1.eachLine { line, lineNr ->
     def parts = line.split(";")
-    def question = new Question(vraag: lineNr, artist: parts[0], title: parts[1], year: parts[2] as int)
+    def question = new Question(vraag: lineNr + 1, artist: parts[0], title: parts[1], year: parts[2] as int)
     questions << question
     answers << new Answer(question: question)
 }
 
-
+DecadeScoreboard decadeScoreboard = new DecadeScoreboard(ploegen)
 for (String ploeg : ploegen) {
     println ploeg
-    println '*' * ploeg.length()
     println '*' * ploeg.length()
 
     for (Answer answer : answers) {
@@ -48,11 +51,14 @@ for (String ploeg : ploegen) {
         def artistCorrect = System.console().readLine(question.artist + " - " + question.title + "? " as String)
         if (artistCorrect[0] == '1') {
             answer.addArtistAnsweredBy(ploeg)
+            decadeScoreboard.add(question.decade, ploeg)
         }
         if (artistCorrect[1] == '1') {
             answer.addTitleAnsweredBy(ploeg)
+            decadeScoreboard.add(question.decade, ploeg)
         }
     }
+    println ''
 }
 
 String formatCount(int count) {
@@ -61,16 +67,16 @@ String formatCount(int count) {
     } else if (count < 4) {
         return "[color=#FF8000](${count})[/color]"
     } else {
-        return "${count}"
+        return "(${count})"
     }
 }
 
-println "Ronde"
-println "*********************************"
+println rondeNaam
+println '*' * rondeNaam.length()
 
 for (Answer answer : answers) {
     Question question = answer.question
-    println "${question.artist} ${formatCount(answer.countArtistsAnswered())} - ${question.title} ${formatCount(answer.countTitlesAnswered())})"
+    println "${question.vraag}. ${question.artist} ${formatCount(answer.countArtistsAnswered())} - ${question.title} ${formatCount(answer.countTitlesAnswered())})"
 }
 
 
@@ -79,7 +85,7 @@ println "TOPSCORE"
 def scores = determineScores(answers)
 def maxScore = answers.size() * 2
 def topscore = findTopScore(scores)
-def topscorendePloegende = scores.findAll { it.value == topscore}.collect{ it.key }
+def topscorendePloegende = scores.findAll { it.value == topscore }.collect { it.key }
 println topscorendePloegende.join(" / ") + ": " + topscore + "/" + maxScore + "(${topscore * 100 / maxScore}%)"
 
 //Gemiddelde score
@@ -110,6 +116,8 @@ filterBasedOnAnswers(answers, 2).each { vraag, pl ->
 filterBasedOnAnswers(answers, 3).each { vraag, pl ->
     System.out.println vraag + ": " + pl.join(" / ")
 }
+
+new File(rondeNaam + ".csv" as String).withWriter { writer -> writer.append(decadeScoreboard.toString()) }
 
 //* Lijst QMS op *//
 
@@ -197,14 +205,51 @@ class Answer {
     }
 }
 
-int determineMaxScore(List list) {
-
-}
-
 int findTopScore(Map scores) {
     int max = 0
     scores.each { k, v ->
         max = (v > max ? v : max)
     }
     return max
+}
+
+class DecadeScoreboard {
+    private List<String> ploegen
+    private Map<String, Map<Decade, Integer>> scores = new HashMap<>()
+
+    DecadeScoreboard(List<String> ploegen) {
+        this.ploegen = ploegen
+        ploegen.each {
+            scores.put(it, createDecadeMap())
+        }
+    }
+
+    static Map<Decade, Integer> createDecadeMap() {
+        def map = new HashMap<Decade, Integer>()
+        Decade.values().each { map.put(it, 0) }
+        map
+    }
+
+    void add(Decade decade, String ploeg) {
+        int currentScore = scores.get(ploeg).get(decade)
+        scores.get(ploeg).put(decade, currentScore + 1)
+    }
+
+    @Override
+    String toString() {
+        StringBuilder stringBuilder = new StringBuilder()
+        stringBuilder.append(";60's;70's;80's;90's;00's;10's\n")
+        for (String ploeg : ploegen) {
+            def ploegScores = scores.get(ploeg)
+            stringBuilder.append "${ploeg}"
+            stringBuilder.append ";${ploegScores.get(Decade.SIXTIES)}"
+            stringBuilder.append ";${ploegScores.get(Decade.SEVENTIES)}"
+            stringBuilder.append ";${ploegScores.get(Decade.EIGHTIES)}"
+            stringBuilder.append ";${ploegScores.get(Decade.NINETIES)}"
+            stringBuilder.append ";${ploegScores.get(Decade.NILLIES)}"
+            stringBuilder.append ";${ploegScores.get(Decade.TENS)}"
+            stringBuilder.append "\n"
+        }
+        return stringBuilder.toString()
+    }
 }
