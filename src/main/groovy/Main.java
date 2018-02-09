@@ -15,6 +15,10 @@ public class Main {
         ronde2.setUitleg("Titels met een vrouwennaam, alfabetisch geordend");
         ronde2.print(System.out);
 
+        RondePrinter ronde3 = new RondePrinter("RONDE 3 : SOMETIMES GOOD GUYS DON’T WEAR WHITE", "ronde3", ploegen);
+        ronde3.setUitleg("Titels met een mannennaam, alfabetisch geordend in omgekeerde volgorde");
+        ronde3.print(System.out);
+
 //        scoreAnalytics.printScores(System.out);
 
     }
