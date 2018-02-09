@@ -19,6 +19,9 @@ public class Main {
         ronde3.setUitleg("Titels met een mannennaam, alfabetisch geordend in omgekeerde volgorde");
         ronde3.print(System.out);
 
+        RondePrinter ronde4 = new RondePrinter("RONDE 4 : WHEREVER I LAY MY HAT...", "ronde4", ploegen);
+        ronde4.print(System.out);
+
 //        scoreAnalytics.printScores(System.out);
 
     }
