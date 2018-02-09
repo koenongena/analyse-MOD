@@ -26,7 +26,7 @@ def ronde1 = """AH RAHMAN;JAI HO;2008;
 BRAN VAN 3000;ASTOUNDED;2001;"""
 
 //def ploegen = ["PARIS HILTON LOOKALIKES", "WAG TEAM", "LUCKY LOCOS", "THE CRYPTKICKERS", "GARNIZOEN!", "THE 4SHOTA", "ROYAL FLUSH", "GREEN ONIONS", "KIPZ"]
-def ploegen = ["PARIS HILTON LOOKALIKES"]
+def ploegen = ["PARIS HILTON LOOKALIKES", "WAG"]
 
 def questions = []
 def answers = []
@@ -43,37 +43,73 @@ for (String ploeg : ploegen) {
     println '*' * ploeg.length()
     println '*' * ploeg.length()
 
-    for (Answer answer  : answers ) {
+    for (Answer answer : answers) {
         def question = answer.question
-        def artistCorrect = System.console().readLine(question.artist + "? " as String)
-        if (artistCorrect == '1'){
+        def artistCorrect = System.console().readLine(question.artist + " - " + question.title + "? " as String)
+        if (artistCorrect[0] == '1') {
             answer.addArtistAnsweredBy(ploeg)
         }
-        def titleCorrect = System.console().readLine(question.title + "? " as String)
-        if (titleCorrect == '1'){
+        if (artistCorrect[1] == '1') {
             answer.addTitleAnsweredBy(ploeg)
         }
     }
 }
 
-String formatCount(int count){
-    if (count == 0){
+String formatCount(int count) {
+    if (count == 0) {
         return "[color=#FF4000](${count})[/color]"
-    } else if (count < 4){
+    } else if (count < 4) {
         return "[color=#FF8000](${count})[/color]"
-    } else{
+    } else {
         return "${count}"
     }
 }
+
+println "Ronde"
+println "*********************************"
 
 for (Answer answer : answers) {
     Question question = answer.question
     println "${question.artist} ${formatCount(answer.countArtistsAnswered())} - ${question.title} ${formatCount(answer.countTitlesAnswered())})"
 }
 
-println "* Scores"
+
+println ""
+println "TOPSCORE"
 def scores = determineScores(answers)
-println scores.sort { a, b -> b.value <=> a.value }
+def maxScore = answers.size() * 2
+def topscore = findTopScore(scores)
+def topscorendePloegende = scores.findAll { it.value == topscore}.collect{ it.key }
+println topscorendePloegende.join(" / ") + ": " + topscore + "/" + maxScore + "(${topscore * 100 / maxScore}%)"
+
+//Gemiddelde score
+int sum = 0
+scores.each { k, score ->
+    sum += score
+}
+def gemiddleScore = sum / ploegen.size()
+println ""
+println "GEMIDDELDE SCORE:"
+println "Gemiddelde score ${gemiddleScore}/${maxScore} (${gemiddleScore * 100 / maxScore}%)"
+
+//MOEILIJKERE UITVOERDERS/TITELS
+println ""
+println "MOEILIJKERE UITVOERDERS/TITELS"
+filterBasedOnAnswers(answers, 0).each { vraag, pl ->
+    System.out.println vraag + ": QMS"
+}
+
+filterBasedOnAnswers(answers, 1).each { vraag, pl ->
+    System.out.println vraag + ": " + pl.join(" / ")
+}
+
+filterBasedOnAnswers(answers, 2).each { vraag, pl ->
+    System.out.println vraag + ": " + pl.join(" / ")
+}
+
+filterBasedOnAnswers(answers, 3).each { vraag, pl ->
+    System.out.println vraag + ": " + pl.join(" / ")
+}
 
 //* Lijst QMS op *//
 
@@ -81,13 +117,13 @@ def determineScores(answers) {
     def s = [:]
     for (Answer answer : answers) {
         for (String ploeg : answer.titleAnsweredBy) {
-            if (!s.containsKey(ploeg)){
+            if (!s.containsKey(ploeg)) {
                 s[ploeg] = 0
             }
             s[ploeg] = s[ploeg] + 1
         }
         for (String ploeg : answer.artistAnsweredBy) {
-            if (!s.containsKey(ploeg)){
+            if (!s.containsKey(ploeg)) {
                 s[ploeg] = 0
             }
             s[ploeg] = s[ploeg] + 1
@@ -97,34 +133,20 @@ def determineScores(answers) {
     return s
 }
 
-def filterQMS = {
-    def qms = []
+def filterBasedOnAnswers(answers, amount) {
+    def a = [:]
     answers.each { Answer answer ->
-        if (answer.countArtistsAnswered() == 0) {
-            qms << answer.question.artist
+        if (answer.countArtistsAnswered() == amount) {
+            a.put(answer.question.artist, answer.artistAnsweredBy)
         }
-        if (answer.countTitlesAnswered() == 0) {
-            qms << answer.question.title
+        if (answer.countTitlesAnswered() == amount) {
+            a.put(answer.question.title, answer.titleAnsweredBy)
         }
     }
-    return qms
+    return a
 }
 
-/*
-* TOPSCORE:
-Martha Wainwrong ain't right met 46/48 (95,83%) :handgestures-thumbupright:
-
-GEMIDDELDE SCORE:
-39/48 (81,94%)
-
-MOEILIJKERE UITVOERDERS/TITELS:
-*Cocoon: The Cryptkickers / Royal Flush
-*Until our dying day: The Cryptkickers / Martha Wainwrong ain't right
-*Wenn es passiert: Martha Wainwrong ain't right / Wag Team / Garnizoen!
-
-* */
-
-def qms = filterQMS(answers)
+def qms = filterBasedOnAnswers(answers)
 for (String a : qms) {
     println "QMS : " + a
 }
@@ -135,8 +157,8 @@ class Question {
     String artist, title
     int year
 
-    Decade getDecade(){
-        switch(year){
+    Decade getDecade() {
+        switch (year) {
             case 1900..1969: return Decade.SIXTIES
             case 1970..1979: return Decade.SEVENTIES
             case 1980..1989: return Decade.EIGHTIES
@@ -149,7 +171,7 @@ class Question {
     }
 }
 
-enum Decade{
+enum Decade {
     SIXTIES, SEVENTIES, EIGHTIES, NINETIES, NILLIES, TENS;
 }
 
@@ -158,19 +180,31 @@ class Answer {
     def titleAnsweredBy = []
     def artistAnsweredBy = []
 
-    void addTitleAnsweredBy(String ploeg){
+    void addTitleAnsweredBy(String ploeg) {
         titleAnsweredBy << ploeg
     }
 
-    void addArtistAnsweredBy(String ploeg){
+    void addArtistAnsweredBy(String ploeg) {
         artistAnsweredBy << ploeg
     }
 
-    int countArtistsAnswered(){
+    int countArtistsAnswered() {
         return artistAnsweredBy.size()
     }
 
-    int countTitlesAnswered(){
+    int countTitlesAnswered() {
         return titleAnsweredBy.size()
     }
+}
+
+int determineMaxScore(List list) {
+
+}
+
+int findTopScore(Map scores) {
+    int max = 0
+    scores.each { k, v ->
+        max = (v > max ? v : max)
+    }
+    return max
 }
