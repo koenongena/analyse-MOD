@@ -56,9 +56,19 @@ for (String ploeg : ploegen) {
     }
 }
 
+String formatCount(int count){
+    if (count == 0){
+        return "[color=#FF4000](${count})[/color]"
+    } else if (count < 4){
+        return "[color=#FF8000](${count})[/color]"
+    } else{
+        return "${count}"
+    }
+}
+
 for (Answer answer : answers) {
     Question question = answer.question
-    println "${question.artist} (${answer.countArtistsAnswered()}) - ${question.title} (${answer.countTitlesAnswered()})"
+    println "${question.artist} ${formatCount(answer.countArtistsAnswered())} - ${question.title} ${formatCount(answer.countTitlesAnswered())})"
 }
 
 //* Lijst QMS op *//
