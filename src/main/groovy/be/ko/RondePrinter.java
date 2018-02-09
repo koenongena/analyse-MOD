@@ -41,5 +41,8 @@ public class RondePrinter {
         ScoreAnalytics scoreAnalytics = new ScoreAnalytics(vragen, antwoorden);
         scoreAnalytics.printTopscore(out);
         scoreAnalytics.printGemiddeldeScore(out);
+
+        out.println("**************************");
+        out.println();
     }
 }
