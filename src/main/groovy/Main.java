@@ -1,7 +1,6 @@
 import be.ko.*;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -42,8 +41,25 @@ public class Main {
 
 //        scoreAnalytics.printScores(System.out);
 
-//        DecenniumScorebord decenniumScorebord = new DecenniumScorebord(ploegen);
-//        decenniumScorebord += decenniumScorebord + ronde1.getDecenniaAnalytics():
+        DecenniumScorebord decenniumScorebord = new DecenniumScorebord(ploegen);
+        decenniumScorebord = decenniumScorebord.plus(ronde1.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde2.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde3.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde4.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde5.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde6.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde7.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde8.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde9.getDecenniaScorebord());
+        decenniumScorebord = decenniumScorebord.plus(ronde10.getDecenniaScorebord());
+        System.out.println(decenniumScorebord.toString());
+
+        decenniumScorebord.printSixtiesKlassement(System.out);
+        decenniumScorebord.printSeventiesKlassement(System.out);
+        decenniumScorebord.printEightiesKlassement(System.out);
+        decenniumScorebord.printNinetiesKlassement(System.out);
+        decenniumScorebord.printNiliesKlassement(System.out);
+        decenniumScorebord.printTensKlassement(System.out);
     }
 
     private static List<PloegAntwoorden> getAntwoorden(List<Ploeg> ploegen, String ronde1) {

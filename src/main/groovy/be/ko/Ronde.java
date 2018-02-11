@@ -49,4 +49,8 @@ public class Ronde {
         out.println("**************************");
         out.println();
     }
+
+    public DecenniumScorebord getDecenniaScorebord() {
+        return new DecenniaAnalystics(vragen, antwoorden).getScorebord();
+    }
 }

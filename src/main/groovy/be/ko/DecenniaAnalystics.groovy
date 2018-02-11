@@ -28,7 +28,7 @@ class DecenniaAnalystics {
                 }
             }
         }
-        this.decenniaScoreboard.setMaxScore()
+        this.decenniaScoreboard.setMaxScores(getHighscores())
     }
 
     private Map<Ploeg, Integer> getSixtiesScores() {
@@ -51,12 +51,15 @@ class DecenniaAnalystics {
         return sum
     }
 
-    void print(PrintStream out) {
-        out.println("Analyse per decennium (alle rondes in rekening gebracht)")
-
-        out.println("[b]Klassement 60's (op ${getHighscore(Decade.SIXTIES)})[/b]")
-        getSixtiesScores().sort { a, b -> b.value <=> a.value }.each { Ploeg ploeg, score ->
-            out.println("${ploeg.naam} - ${score}")
+    private Map<Decade, Integer> getHighscores() {
+        Map<Decade, Integer> highscores = new HashMap<>()
+        for (Decade decade : Decade.values()) {
+            highscores.put(decade, getHighscore(decade))
         }
+        return highscores
+    }
+
+    DecenniumScorebord getScorebord ( ) {
+        return this.decenniaScoreboard
     }
 }
