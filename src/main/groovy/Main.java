@@ -10,7 +10,8 @@ public class Main {
         List<Vraag> ronde1Vragen = new VragenParser().parse(new File("src/main/resources/rondes/" + "ronde1" + ".csv"));
         List<PloegAntwoorden> ronde1Antwoorden = new AntwoordenParser(ploegen).parse("ronde1" + ".txt");
 
-        new RondePrinter("RONDE 1 : ALFABET", ronde1Vragen, ronde1Antwoorden).print(System.out);
+        RondePrinter ronde1 = new RondePrinter("RONDE 1 : ALFABET", ronde1Vragen, ronde1Antwoorden);
+        ronde1.print(System.out);
 
         RondePrinter ronde2 = new RondePrinter("RONDE 2 : WHAT'S IN A GIRLS NAME", new VragenParser().parse(new File("src/main/resources/rondes/" + "ronde2" + ".csv")), new AntwoordenParser(ploegen).parse("ronde2" + ".txt"));
         ronde2.print(System.out);
@@ -23,6 +24,9 @@ public class Main {
 
         RondePrinter ronde5 = new RondePrinter("RONDE 5: I CLOSE MY EYES AND COUNT BACK FROM 12", new VragenParser().parse(new File("src/main/resources/rondes/" + "ronde5" + ".csv")), new AntwoordenParser(ploegen).parse("ronde5" + ".txt"));
         ronde5.print(System.out);
+
+        RondePrinter ronde6 = new RondePrinter("RONDE 6 : SHAKE YOUR BODY DOWN TO THE GROUND", new VragenParser().parse(new File("src/main/resources/rondes/ronde6.csv")), new AntwoordenParser(ploegen).parse("ronde6" + ".txt"));
+        ronde6.print(System.out);
 
         RondePrinter ronde7 = new RondePrinter("RONDE 7 : THE WIND CRIES MARY", new VragenParser().parse(new File("src/main/resources/rondes/ronde7.csv")), new AntwoordenParser(ploegen).parse("ronde7" + ".txt"));
         ronde7.print(System.out);
