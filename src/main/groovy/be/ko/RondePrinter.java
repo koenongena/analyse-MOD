@@ -1,20 +1,20 @@
 package be.ko;
 
-import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
 public class RondePrinter {
+    private final List<Vraag> vragen;
+    private final List<PloegAntwoorden> antwoorden;
     private String titel;
     private String uitleg = "";
-    private String fileBaseName;
-    private List<Ploeg> ploegen;
 
-    public RondePrinter(String titel, String fileBaseName, List<Ploeg> ploegen) {
+    public RondePrinter(String titel, List<Vraag> vragen, List<PloegAntwoorden> antwoorden) {
 
         this.titel = titel;
-        this.fileBaseName = fileBaseName;
-        this.ploegen = ploegen;
+
+        this.vragen = vragen;
+        this.antwoorden = antwoorden;
     }
 
     public void setUitleg(String uitleg) {
@@ -28,8 +28,7 @@ public class RondePrinter {
         }
         out.println();
 
-        List<Vraag> vragen = new VragenParser().parse(new File("src/main/resources/rondes/" + fileBaseName + ".csv"));
-        List<PloegAntwoorden> antwoorden = new AntwoordenParser(ploegen).parse(fileBaseName + ".txt");
+
 
         RondeAnalytics rondeAnalytics = new RondeAnalytics(vragen, antwoorden);
         rondeAnalytics.printAntwoordenAantallen(out);
