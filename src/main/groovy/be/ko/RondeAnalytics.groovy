@@ -4,18 +4,38 @@ class RondeAnalytics {
 
     private List<Vraag> vragen
     private List<PloegAntwoorden> antwoorden
+    private DecenniumScorebord decenniaScoreboard
 
     RondeAnalytics(List<Vraag> vragen, List<PloegAntwoorden> antwoorden) {
         this.antwoorden = antwoorden
         this.vragen = vragen
+        initDecenniaScoreboard()
     }
+
+    private void initDecenniaScoreboard() {
+        this.decenniaScoreboard = new DecenniumScorebord(antwoorden.collect { it.ploeg })
+
+        for (Vraag vraag : vragen) {
+            for (PloegAntwoorden ploegAntwoord : antwoorden) {
+                def a = ploegAntwoord.getAnswer(vraag.id)
+                if (a.titelCorrect) {
+                    decenniaScoreboard.addPunt(vraag.decade, ploegAntwoord.ploeg)
+                }
+                if (a.artiestCorrect) {
+                    decenniaScoreboard.addPunt(vraag.decade, ploegAntwoord.ploeg)
+                }
+            }
+        }
+    }
+
+
 
     void printAntwoordenAantallen(PrintStream out) {
         for (Vraag question : vragen) {
             int correctArtists = countArtists(antwoorden, question)
             int correctTitles = countTitles(antwoorden, question)
 
-            out.println "${question.id}. ${question.artist} ${formatCount(correctArtists)} - ${question.title} ${formatCount(correctTitles)}"
+            out.println "${question.id}. ${question.artist} ${CountFormatter.formatCount(correctArtists)} - ${question.title} ${CountFormatter.formatCount(correctTitles)}"
         }
     }
 
@@ -81,13 +101,4 @@ class RondeAnalytics {
         ploegAntwoordens.count { it.getAnswer(vraag.id).artiestCorrect }
     }
 
-    private static String formatCount(int count) {
-        if (count == 0) {
-            return "[color=#FF4000](${count})[/color]"
-        } else if (count < 4) {
-            return "[color=#FF8000](${count})[/color]"
-        } else {
-            return "(${count})"
-        }
     }
-}

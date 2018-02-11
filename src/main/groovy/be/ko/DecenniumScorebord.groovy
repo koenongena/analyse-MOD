@@ -11,6 +11,21 @@ class DecenniumScorebord {
         }
     }
 
+    Integer getScore(Decade decade, Ploeg ploeg) {
+        return scores.get(ploeg).get(decade)
+    }
+
+    DecenniumScorebord plus(DecenniumScorebord decenniumScorebord) {
+        def newScoreboard = new DecenniumScorebord(ploegen)
+        for (Ploeg ploeg : ploegen) {
+            for (Decade decade : Decade.values()) {
+                int newScore = this.getScore(decade, ploeg) + decenniumScorebord.getScore(decade, ploeg)
+                newScoreboard.scores.get(ploeg).get(decade, newScore)
+            }
+        }
+        return newScoreboard
+    }
+
     static Map<Decade, Integer> createDecadeMap() {
         def map = new HashMap<Decade, Integer>()
         Decade.values().each { map.put(it, 0) }

@@ -3,18 +3,22 @@ package be.ko;
 import java.io.PrintStream;
 import java.util.List;
 
-public class RondePrinter {
+public class Ronde {
     private final List<Vraag> vragen;
     private final List<PloegAntwoorden> antwoorden;
     private String titel;
     private String uitleg = "";
 
-    public RondePrinter(String titel, List<Vraag> vragen, List<PloegAntwoorden> antwoorden) {
+    public Ronde(String titel, List<Vraag> vragen, List<PloegAntwoorden> antwoorden) {
 
         this.titel = titel;
 
         this.vragen = vragen;
         this.antwoorden = antwoorden;
+    }
+
+    public DecenniaAnalystics getDecenniaAnalytics() {
+        return new DecenniaAnalystics(vragen, antwoorden);
     }
 
     public void setUitleg(String uitleg) {
@@ -41,6 +45,7 @@ public class RondePrinter {
         scoreAnalytics.printTopscore(out);
         scoreAnalytics.printGemiddeldeScore(out);
 
+        out.println();
         out.println("**************************");
         out.println();
     }
