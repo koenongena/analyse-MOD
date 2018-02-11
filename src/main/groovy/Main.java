@@ -24,6 +24,9 @@ public class Main {
         RondePrinter ronde5 = new RondePrinter("RONDE 5: I CLOSE MY EYES AND COUNT BACK FROM 12", new VragenParser().parse(new File("src/main/resources/rondes/" + "ronde5" + ".csv")), new AntwoordenParser(ploegen).parse("ronde5" + ".txt"));
         ronde5.print(System.out);
 
+        RondePrinter ronde8 = new RondePrinter("RONDE 8: OVER 6 DAGEN", new VragenParser().parse(new File("src/main/resources/rondes/ronde8.csv")), new AntwoordenParser(ploegen).parse("ronde8" + ".txt"));
+        ronde8.print(System.out);
+
         RondePrinter ronde9 = new RondePrinter("RONDE 9 : AND I WANT, AND I NEED, AND I LOVE...", new VragenParser().parse(new File("src/main/resources/rondes/ronde9.csv")), new AntwoordenParser(ploegen).parse("ronde9" + ".txt"));
         ronde9.print(System.out);
 
