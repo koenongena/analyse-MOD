@@ -13,11 +13,9 @@ public class Main {
         new RondePrinter("RONDE 1 : ALFABET", ronde1Vragen, ronde1Antwoorden).print(System.out);
 
         RondePrinter ronde2 = new RondePrinter("RONDE 2 : WHAT'S IN A GIRLS NAME", new VragenParser().parse(new File("src/main/resources/rondes/" + "ronde2" + ".csv")), new AntwoordenParser(ploegen).parse("ronde2" + ".txt"));
-        ronde2.setUitleg("Titels met een vrouwennaam, alfabetisch geordend");
         ronde2.print(System.out);
 
         RondePrinter ronde3 = new RondePrinter("RONDE 3 : SOMETIMES GOOD GUYS DON’T WEAR WHITE", new VragenParser().parse(new File("src/main/resources/rondes/" + "ronde3" + ".csv")), new AntwoordenParser(ploegen).parse("ronde3" + ".txt"));
-        ronde3.setUitleg("Titels met een mannennaam, alfabetisch geordend in omgekeerde volgorde");
         ronde3.print(System.out);
 
         RondePrinter ronde4 = new RondePrinter("RONDE 4 : WHEREVER I LAY MY HAT...", new VragenParser().parse(new File("src/main/resources/rondes/" + "ronde4" + ".csv")), new AntwoordenParser(ploegen).parse("ronde4" + ".txt"));
@@ -26,9 +24,12 @@ public class Main {
         RondePrinter ronde5 = new RondePrinter("RONDE 5: I CLOSE MY EYES AND COUNT BACK FROM 12", new VragenParser().parse(new File("src/main/resources/rondes/" + "ronde5" + ".csv")), new AntwoordenParser(ploegen).parse("ronde5" + ".txt"));
         ronde5.print(System.out);
 
+        RondePrinter ronde9 = new RondePrinter("RONDE 9 : AND I WANT, AND I NEED, AND I LOVE...", new VragenParser().parse(new File("src/main/resources/rondes/ronde9.csv")), new AntwoordenParser(ploegen).parse("ronde9" + ".txt"));
+        ronde9.print(System.out);
 
         RondePrinter ronde10 = new RondePrinter("RONDE 10: FAVORIETENRONDE", new VragenParser().parse(new File("src/main/resources/rondes/ronde10.csv")), new AntwoordenParser(ploegen).parse("ronde10" + ".txt"));
         ronde10.print(System.out);
+
 
 
 
